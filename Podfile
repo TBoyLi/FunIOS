@@ -19,10 +19,10 @@ target 'FunIOS' do
   pod 'SVProgressHUD'
   pod 'MBProgressHUD'
   pod 'Reusable'  #可复用
-  pod 'Tabman' #tab导航
+  #pod 'Tabman' #tab导航
   pod 'JXSegmentedView'
   pod 'LGButton'
-  pod 'Toast-Swift’, '~> 5.0.1'
+  pod 'Toast-Swift', '~> 5.0.1'
   pod 'TagListView', '~> 1.0' #tag标签栏
   pod 'SwiftEventBus', :tag => '5.1.0', :git => 'https://github.com/cesarferreira/SwiftEventBus.git'
   
