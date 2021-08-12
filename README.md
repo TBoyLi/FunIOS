@@ -1,5 +1,31 @@
 # FunIOS - [玩Android](https://www.wanandroid.com/index) IOS Swift 版本
 
+## 介绍
+
+**我一直都是做Android开发的，一直以来在断断续续的学习IOS，学了Object-C，可以看懂，写就不太习惯，后来直接上手了swift，突然觉得太舒服了，跟kotlin，dart差不多，本项目是纯代目撸布局。使用SnapKit 拘束布局搭建**
+
+## 依赖第三方
+
+```
+  pod 'PrintBeautifulLog' #日志
+  pod 'Alamofire' , '~> 4.7' #网络
+  pod 'MJRefresh' #刷新
+  pod 'LLCycleScrollView' #轮播
+  pod 'HandyJSON' #序列化 反序列
+  pod 'Kingfisher' #图片
+  pod 'Then' #语法糖
+  pod 'SnapKitExtend' #自动布局扩展
+  pod 'SVProgressHUD' #加载框
+  pod 'MBProgressHUD' #加载框
+  pod 'Reusable'  #可复用
+  pod 'JXSegmentedView' #顶部tab
+  pod 'LGButton' #按钮
+  pod 'Toast-Swift', '~> 5.0.1' #吐司
+  pod 'TagListView', '~> 1.0' #tag标签栏
+  pod 'SwiftEventBus', :tag => '5.1.0', :git => 'https://github.com/cesarferreira/SwiftEventBus.git' #跨界面通信
+
+```
+
 ## 截图
 <img src="https://user-images.githubusercontent.com/14815341/129129661-5ce33645-615d-473c-9ebe-0b7d932dc425.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/129129680-0328ecdc-2ab8-43e4-ab2d-9014a80feb8f.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/129130311-d7135ba4-c4e1-4de5-b536-9cc84a9c53ce.png"  width="260px" />  
 
