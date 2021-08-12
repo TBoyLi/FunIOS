@@ -26,6 +26,9 @@
 
 ```
 
+## 使用方法
+**下载源码，根目录执行 pod install 用 xcode 打开 FunIOS.xcworkspace 即可**
+
 ## 截图
 <img src="https://user-images.githubusercontent.com/14815341/129129661-5ce33645-615d-473c-9ebe-0b7d932dc425.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/129129680-0328ecdc-2ab8-43e4-ab2d-9014a80feb8f.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/129130311-d7135ba4-c4e1-4de5-b536-9cc84a9c53ce.png"  width="260px" />  
 
