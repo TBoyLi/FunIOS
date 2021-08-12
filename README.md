@@ -1,7 +1,7 @@
 # FunIOS - [玩Android](https://www.wanandroid.com/index) IOS Swift 版本
 
 ## 截图
-<img src="https://user-images.githubusercontent.com/14815341/129129661-5ce33645-615d-473c-9ebe-0b7d932dc425.png"  width="300px" />      <img src="https://user-images.githubusercontent.com/14815341/129129680-0328ecdc-2ab8-43e4-ab2d-9014a80feb8f.png"  width="300px" />      <img src="https://user-images.githubusercontent.com/14815341/129130311-d7135ba4-c4e1-4de5-b536-9cc84a9c53ce.png"  width="300px" />  
+<img src="https://user-images.githubusercontent.com/14815341/129129661-5ce33645-615d-473c-9ebe-0b7d932dc425.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/129129680-0328ecdc-2ab8-43e4-ab2d-9014a80feb8f.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/129130311-d7135ba4-c4e1-4de5-b536-9cc84a9c53ce.png"  width="260px" />  
 
 
 <img src="https://user-images.githubusercontent.com/14815341/129130326-7f564552-75d1-4f09-a4a7-1e81ec1ee45a.png"  width="300px" />     <img src="https://user-images.githubusercontent.com/14815341/129130336-c062ce87-3e45-479d-9ff9-f28dfa36e6d4.png"  width="300px" />     <img src="https://user-images.githubusercontent.com/14815341/129130347-66386ecf-c5a9-44cd-b12e-91d49278980a.png"  width="300px" />
