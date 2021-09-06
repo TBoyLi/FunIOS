@@ -12,7 +12,7 @@ class IndexVController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initTab()
-        UITabBar.appearance().tintColor = UIColor.red
+        UITabBar.appearance().tintColor = UIColor.red.withAlphaComponent(0.5)
     }
     
     private func initTab() {
@@ -24,7 +24,7 @@ class IndexVController: UITabBarController {
         
         home.tabBarItem = UITabBarItem(title: "主页", image: UIImage(named: "home_tabbar_night_32x32_"), selectedImage: UIImage(named: "home_tabbar_press_32x32_"))
         
-        project.tabBarItem = UITabBarItem(title: "项目", image: UIImage(named: "huoshan_tabbar_night_32x32_"), selectedImage: UIImage(named: "huoshan_tabbar_press_32x32_"))
+        project.tabBarItem = UITabBarItem(title: "项目", image: UIImage(named: "project_tabbar_night_32x32_"), selectedImage: UIImage(named: "project_tabbar_press_32x32_"))
         
         wechat.tabBarItem = UITabBarItem(title: "公众号", image: UIImage(named: "wechat_tabbar_night_32x32_"), selectedImage: UIImage(named: "wechat_tabbar_press_32x32_"))
         

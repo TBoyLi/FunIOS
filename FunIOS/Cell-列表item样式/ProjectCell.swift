@@ -53,7 +53,6 @@ class ProjectCell: BaseTableViewCell {
         
     }
     
-    
     private lazy var labelChapterName = UILabel().then({(attr) in
         attr.text = "ChapterName"
         attr.textColor = .gray
@@ -84,11 +83,17 @@ class ProjectCell: BaseTableViewCell {
                 imageContainer.kf.setImage(with: URL(string: model!.envelopePic), placeholder: UIImage(named: "normal_placeholder_h"))
                 labelSuperChapterName.text = model?.superChapterName
                 labelChapterName.text = " · \(model?.chapterName ?? "")"
+                
+                isCollect = model?.collect ?? false
+                
+                refreshCollect(isCollect: isCollect)
+                
+                imgCollect.tag = model?.id ?? 0
+                
                 return
             }
         }
     }
-    
     
     override func configUI() {
         contentView.addSubview(labelAuthor)
@@ -143,6 +148,15 @@ class ProjectCell: BaseTableViewCell {
             maker.top.equalTo(labelDesc.snp.bottom).offset(10)
             maker.bottom.equalToSuperview().offset(-10)
         })
+        
+        contentView.addSubview(imgCollect)
+        imgCollect.snp.makeConstraints { maker in
+            maker.height.equalTo(20)
+            maker.width.equalTo(20)
+            maker.trailing.equalToSuperview().offset(-10)
+            maker.bottom.equalToSuperview().offset(-5)
+        }
+        
+        imgCollect.addTarget(self, action: #selector(self.collect(btn:)), for: .touchUpInside)
     }
-    
 }

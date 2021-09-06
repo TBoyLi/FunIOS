@@ -83,6 +83,13 @@ class WechatCell: BaseTableViewCell {
                 labelDesc.text = model?.desc
                 labelSuperChapterName.text = model?.superChapterName
                 labelChapterName.text = " · \(model?.chapterName ?? "")"
+                
+                isCollect = model?.collect ?? false
+                
+                refreshCollect(isCollect: isCollect)
+                
+                imgCollect.tag = model?.id ?? 0
+                
                 return
             }
         }
@@ -139,6 +146,16 @@ class WechatCell: BaseTableViewCell {
             maker.trailing.equalToSuperview().offset(-10)
             maker.height.equalTo(1)
         }
+        
+        contentView.addSubview(imgCollect)
+        imgCollect.snp.makeConstraints { maker in
+            maker.height.equalTo(20)
+            maker.width.equalTo(20)
+            maker.trailing.equalToSuperview().offset(-10)
+            maker.bottom.equalToSuperview().offset(-5)
+        }
+        
+        imgCollect.addTarget(self, action: #selector(self.collect(btn:)), for: .touchUpInside)
     }
     
 }

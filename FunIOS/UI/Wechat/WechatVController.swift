@@ -9,7 +9,7 @@ import UIKit
 import SnapKitExtend
 import JXSegmentedView
 
-class WechatVController: UIViewController {
+class WechatVController: BaseCVontroller {
     
     private let segmentedView = JXSegmentedView()
     
@@ -36,13 +36,13 @@ class WechatVController: UIViewController {
     }
     
     override func viewDidLoad() {
-        Api.fetchWechatSegmented { (value:Array<StructureModel>?) in
+        Api.fetchWechatSegmented(success: { (value:Array<StructureModel>?) in
             value?.forEach({ (item: StructureModel) in
                 self.tabTitles.append(item.name)
                 self.viewControllers.append(WechatArticlesVController(cid: item.id))
             })
             self.loadUI()
-        }
+        }, error: error(error:))
     }
     
     private func loadUI() {
@@ -58,7 +58,6 @@ class WechatVController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
         segmentedView.frame = CGRect(x: 0, y: statusBarHeight, width: screenWidth, height: 50)
         
         divLine.frame = CGRect(x: 0, y: statusBarHeight + 50, width: screenWidth, height: 1)

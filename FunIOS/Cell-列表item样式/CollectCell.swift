@@ -45,6 +45,7 @@ class CollectCell: BaseTableViewCell {
         attr.numberOfLines = 2 //相当于不限制行数
         attr.lineBreakMode = .byTruncatingTail
         attr.sizeToFit()
+        attr.isHidden = true
         attr.backgroundColor = UIColor.white
     }
     
@@ -77,7 +78,7 @@ class CollectCell: BaseTableViewCell {
         didSet {
             guard model == nil else {
                 labelAuthor.text = (model?.author.isEmpty)! ? model?.shareUser : model?.author
-                labelTime.text = model?.niceShareDate
+                labelTime.text = model?.niceDate
                 labelTitle.text = model?.title
                 labelDesc.text = model?.desc
                 labelSuperChapterName.text = model?.superChapterName
@@ -110,23 +111,23 @@ class CollectCell: BaseTableViewCell {
             maker.trailing.equalToSuperview().offset(-10)
         })
         
-        contentView.addSubview(labelDesc)
-        labelDesc.snp.makeConstraints { (maker) in
-            maker.top.equalTo(labelTitle.snp.bottom).offset(10)
-            maker.leading.equalToSuperview().offset(10)
-            maker.trailing.equalToSuperview().offset(-10)
-        }
+//        contentView.addSubview(labelDesc)
+//        labelDesc.snp.makeConstraints { (maker) in
+//            maker.top.equalTo(labelTitle.snp.bottom).offset(10)
+//            maker.leading.equalToSuperview().offset(10)
+//            maker.trailing.equalToSuperview().offset(-10)
+//        }
         
         contentView.addSubview(labelSuperChapterName)
         labelSuperChapterName.snp.makeConstraints {(maker) in
             maker.leading.equalToSuperview().offset(10)
-            maker.top.equalTo(labelDesc.snp.bottom).offset(10)
+            maker.top.equalTo(labelTitle.snp.bottom).offset(10)
         }
 
         contentView.addSubview(labelChapterName)
         labelChapterName.snp.makeConstraints({(maker) in
             maker.leading.equalTo(labelSuperChapterName.snp.trailing)
-            maker.top.equalTo(labelDesc.snp.bottom).offset(10)
+            maker.top.equalTo(labelTitle.snp.bottom).offset(10)
         })
         
         contentView.addSubview(line)

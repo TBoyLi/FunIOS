@@ -13,7 +13,7 @@ import SVProgressHUD
 import MBProgressHUD
 import HandyJSON
 
-class HomeVController: UIViewController {
+class HomeVController: BaseCVontroller {
     
     var page = 0
     
@@ -29,6 +29,7 @@ class HomeVController: UIViewController {
         attr.dataSource = self
         attr.alwaysBounceVertical = true
         //        attr.separatorStyle = .none
+        attr.register(ArticleCell.self, forCellReuseIdentifier: "ArticleCell")
     })
     
     private lazy var bannerView = LLCycleScrollView().then({ (attr) in
@@ -58,14 +59,15 @@ class HomeVController: UIViewController {
     
     override func viewDidLoad() {
         self.view.addSubview(tableView)
-        tableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        
+        tableView.snp.makeConstraints { maker in
+            maker.top.equalToSuperview().offset(statusBarHeight)
+            maker.left.equalToSuperview()
+            maker.right.equalToSuperview()
+            maker.bottom.equalToSuperview()
         }
         
         tableView.tableHeaderView = bannerView
-        
-        tableView.register(ArticleCell.self, forCellReuseIdentifier: "ArticleCell")
-        
         
         if #available(iOS 11.0, *) {
             UIScrollView.appearance().contentInsetAdjustmentBehavior = .never
@@ -102,21 +104,21 @@ class HomeVController: UIViewController {
         }
         
         if !loadMore {
-            Api.fetchBanners(block: {(value:Array<BannerModel>?) in
+            Api.fetchBanners(success: {(value:Array<BannerModel>?) in
                 self.bannerLists = value ?? []
                 self.bannerView.imagePaths = value?.map{$0.imagePath} ?? []
                 self.bannerView.titles = value?.map{ $0.title} ?? []
-            })
+            }, error: error(error:))
             
             self.dispatchGroup.enter()
-            Api.fetchTopArticles(block: {(value: Array<ArticleItemModel>?) in
+            Api.fetchTopArticles(success: {(value: Array<ArticleItemModel>?) in
                 self.articleList = value ?? []
                 self.dispatchGroup.leave()
-            })
+            }, error: error(error:))
         }
         
         self.dispatchGroup.enter()
-        Api.fetchArticles(page: page) {(value: ArticleModel?) in
+        Api.fetchArticles(page: page, success: { (value: ArticleModel?) in
             //结束刷新
             if self.tableView.mj_header!.isRefreshing  { self.tableView.mj_header?.endRefreshing()
             }
@@ -131,13 +133,13 @@ class HomeVController: UIViewController {
                         self.articleList.append(contentsOf: value!.datas)
                     }
             } else {
-                if value?.datas.count ?? 0 < 20 {
+                if value?.datas.count ?? 0 < (loadMore ? 20 : 19) {
                     self.tableView.mj_footer?.endRefreshingWithNoMoreData()
                 }
                 self.articleList.append(contentsOf: value!.datas)
             }
             self.dispatchGroup.leave()
-        }
+        }, error: error(error:))
         
         self.dispatchGroup.notify(queue: DispatchQueue.main) {
             self.tableView.reloadData()
@@ -146,7 +148,7 @@ class HomeVController: UIViewController {
     
 }
 
-extension HomeVController: UITableViewDataSource, UITableViewDelegate {
+extension HomeVController: UITableViewDataSource, UITableViewDelegate, CollectDelegate {
     //数据
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return articleList.count
@@ -160,6 +162,7 @@ extension HomeVController: UITableViewDataSource, UITableViewDelegate {
     //每行加载样式
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tableViewCell = tableView.dequeueReusableCell(for: indexPath, cellType: ArticleCell.self)
+        tableViewCell.collectDelegate = self
         tableViewCell.model = articleList[indexPath.row]
         return tableViewCell
     }
@@ -171,4 +174,21 @@ extension HomeVController: UITableViewDataSource, UITableViewDelegate {
         navigationController?.pushViewController(webVController, animated: true)
     }
     
+    //收藏文章
+    func collectAirticle(cid id: Int, tabCell tabviewCell: UITableViewCell) {
+        Api.collect(cid: id, success: { value in
+            let cell = tabviewCell as! ArticleCell
+            cell.refreshCollect(isCollect: true)
+            self.view.makeToast("收藏成功")
+        }, error: error(error:))
+    }
+    
+    //取消收藏文章
+    func uncollectAirticle(cid id: Int, tabCell tabviewCell: UITableViewCell) {
+        Api.uncollect(cid: id, success: { value in
+            let cell = tabviewCell as! ArticleCell
+            cell.refreshCollect(isCollect: false)
+            self.view.makeToast("取消收藏成功")
+        }, error: error(error:))
+    }
 }

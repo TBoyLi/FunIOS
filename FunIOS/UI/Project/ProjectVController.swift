@@ -9,7 +9,7 @@ import UIKit
 import SnapKitExtend
 import JXSegmentedView
 
-class ProjectVController: UIViewController {
+class ProjectVController: BaseCVontroller {
 
     
     private let segmentedView = JXSegmentedView()
@@ -37,13 +37,13 @@ class ProjectVController: UIViewController {
     }
     
     override func viewDidLoad() {
-        Api.fetchProjectSegmented { (value:Array<StructureModel>?) in
+        Api.fetchProjectSegmented(success: { (value:Array<StructureModel>?) in
             value?.forEach({ (item: StructureModel) in
                 self.tabTitles.append(item.name)
                 self.viewControllers.append(ProjectArticlesVController(cid: item.id))
             })
             self.loadUI()
-        }
+        }, error: error(error:))
     }
     
     private func loadUI() {
@@ -59,7 +59,6 @@ class ProjectVController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
         segmentedView.frame = CGRect(x: 0, y: statusBarHeight, width: screenWidth, height: 50)
         
         divLine.frame = CGRect(x: 0, y: statusBarHeight + 50, width: screenWidth, height: 1)
@@ -76,6 +75,4 @@ extension ProjectVController: JXSegmentedListContainerViewDataSource {
     func listContainerView(_ listContainerView: JXSegmentedListContainerView, initListAt index: Int) -> JXSegmentedListContainerViewListDelegate {
         return viewControllers[index]
     }
-    
-    
 }

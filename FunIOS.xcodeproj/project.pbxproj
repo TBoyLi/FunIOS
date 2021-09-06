@@ -15,6 +15,7 @@
 		98150BEC26BA3EEB00460038 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98150BEB26BA3EEB00460038 /* UserModel.swift */; };
 		98150BEE26BA803000460038 /* MBProgressHUD+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98150BED26BA803000460038 /* MBProgressHUD+Extension.swift */; };
 		98150BF026BA806600460038 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98150BEF26BA806600460038 /* UIViewController+Extension.swift */; };
+		983FE9F626E5C1B80021E0B5 /* BaseVController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983FE9F526E5C1B80021E0B5 /* BaseVController.swift */; };
 		986CEF5E26AC751600BB1520 /* WebVController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986CEF5D26AC751600BB1520 /* WebVController.swift */; };
 		986CEF6026AD58C800BB1520 /* StructureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986CEF5F26AD58C800BB1520 /* StructureModel.swift */; };
 		986CEF6226AD606100BB1520 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986CEF6126AD606100BB1520 /* UIView+Extension.swift */; };
@@ -70,6 +71,7 @@
 		98150BEB26BA3EEB00460038 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		98150BED26BA803000460038 /* MBProgressHUD+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+Extension.swift"; sourceTree = "<group>"; };
 		98150BEF26BA806600460038 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		983FE9F526E5C1B80021E0B5 /* BaseVController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVController.swift; sourceTree = "<group>"; };
 		986CEF5D26AC751600BB1520 /* WebVController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebVController.swift; sourceTree = "<group>"; };
 		986CEF5F26AD58C800BB1520 /* StructureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureModel.swift; sourceTree = "<group>"; };
 		986CEF6126AD606100BB1520 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 			children = (
 				98E64DC826A8100C0086EE0D /* BaseResponse.swift */,
 				98E64DE226A91A370086EE0D /* BaseTableViewCell.swift */,
+				983FE9F526E5C1B80021E0B5 /* BaseVController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -552,6 +555,7 @@
 				9810934A26B2A1A100C690FF /* MenuCell.swift in Sources */,
 				98E64DC626A8098F0086EE0D /* Const.swift in Sources */,
 				9810935126B3E30400C690FF /* LoginVController.swift in Sources */,
+				983FE9F626E5C1B80021E0B5 /* BaseVController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,6 +704,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = S32SWP9QYH;
 				INFOPLIST_FILE = FunIOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -707,6 +712,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.redli.FunIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -721,6 +727,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = S32SWP9QYH;
 				INFOPLIST_FILE = FunIOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -728,6 +735,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.redli.FunIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

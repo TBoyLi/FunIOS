@@ -17,7 +17,7 @@ enum MethodType {
 class HttpUtils {
     
     // static 也可以用 class 替代 效果是一样的
-    static func request<T>(url: String, type: MethodType? = MethodType.get, params: [String: Any]? = nil, block: @escaping(_ result: T?) -> ()) {
+    static func request<T>(url: String, type: MethodType? = MethodType.get, params: [String: Any]? = nil, success: @escaping(_ result: T?) -> (), error: @escaping(_ error: String?) -> ()) {
         
         let method = type == .get ? HTTPMethod.get : HTTPMethod.post
 //        let headers: HTTPHeaders = ["Cookie": ""]
@@ -27,20 +27,21 @@ class HttpUtils {
         AF.request(baseUrl + url, method: method, parameters: params).responseJSON { response in
             
             guard let data = response.value else {
-                block(nil)
-                log(log: "请求失败  ---> \(response.error?.errorDescription ?? "")")
+                error(response.error?.errorDescription ?? "请求错误")
+                log(log: "请求错误  ---> \(response.error?.errorDescription ?? "")")
                 return
             }
             
             let result = JSONDeserializer<BaseResponse<T>>.deserializeFrom(dict: data as? [String: Any])
         
             if result?.errorCode == 0 {
-                block(result?.data)
+                success(result?.data)
                 print("请求成功 ---> \(baseUrl + url)")
-                print(response.value ?? "")
             } else{
-                block(nil)
+                error(result?.errorMsg)
+                print("请求失败 ---> \(baseUrl + url)")
             }
+            print(response.value ?? "")
         }
     }
 }

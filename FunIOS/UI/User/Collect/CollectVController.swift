@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class CollectVController: UIViewController {
+class CollectVController: BaseCVontroller {
     
     // 当前页面
     var page = 0
@@ -34,7 +34,7 @@ class CollectVController: UIViewController {
         let navigationHeight = navigationController?.navigationBar.frame.height ?? 0
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints {  (maker) in
-            maker.top.equalToSuperview().offset(statusHeight + navigationHeight)
+            maker.top.equalToSuperview().offset(statusBarHeight + navigationHeight)
             maker.leading.equalToSuperview()
             maker.trailing.equalToSuperview()
             maker.bottom.equalToSuperview()
@@ -67,7 +67,7 @@ class CollectVController: UIViewController {
             page += 1
         }
         
-        Api.fetchCollectArticles(page: page, block: { (value: ArticleModel?) in
+        Api.fetchCollectArticles(page: page, success: { (value: ArticleModel?) in
             //结束刷新
             if self.tableView.mj_header!.isRefreshing  { self.tableView.mj_header?.endRefreshing()
             }
@@ -89,7 +89,7 @@ class CollectVController: UIViewController {
             }
             
             self.tableView.reloadData()
-        })
+        }, error: error(error:))
     }
     
 }

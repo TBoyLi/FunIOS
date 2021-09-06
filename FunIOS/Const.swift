@@ -12,7 +12,7 @@ import UIKit
 let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
 
-let statusHeight = UIApplication.shared.statusBarFrame.height
+let statusBarHeight = UIApplication.shared.statusBarFrame.height
 
 let baseUrl = "https://www.wanandroid.com/"
 

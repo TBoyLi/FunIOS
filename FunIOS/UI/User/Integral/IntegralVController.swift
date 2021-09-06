@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class IntegralVController: UIViewController {
+class IntegralVController: BaseCVontroller {
     
     
     // 当前页面
@@ -34,7 +34,7 @@ class IntegralVController: UIViewController {
         let navigationHeight = navigationController?.navigationBar.frame.height ?? 0
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints {  (maker) in
-            maker.top.equalToSuperview().offset(statusHeight + navigationHeight)
+            maker.top.equalToSuperview().offset(statusBarHeight + navigationHeight)
             maker.leading.equalToSuperview()
             maker.trailing.equalToSuperview()
             maker.bottom.equalToSuperview()
@@ -67,7 +67,7 @@ class IntegralVController: UIViewController {
             page += 1
         }
         
-        Api.fetchMyIntegral(page: page, block: { (value: IntegralModel?) in
+        Api.fetchMyIntegral(page: page, success: { (value: IntegralModel?) in
             //结束刷新
             if self.tableView.mj_header!.isRefreshing  { self.tableView.mj_header?.endRefreshing()
             }
@@ -89,7 +89,7 @@ class IntegralVController: UIViewController {
             }
             
             self.tableView.reloadData()
-        })
+        }, error: error(error:))
     }
     
 }

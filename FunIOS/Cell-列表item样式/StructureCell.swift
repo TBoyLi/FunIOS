@@ -21,7 +21,7 @@ public protocol TagViewDelegate : NSObjectProtocol{
 
 class StructureCell: BaseTableViewCell {
 
-    weak open var delegate: TagViewDelegate?
+    weak open var tagDelegate: TagViewDelegate?
     
     private var tagListView: TagListView = TagListView().then { (attr) in
         attr.textFont = UIFont.systemFont(ofSize: 14)
@@ -52,7 +52,7 @@ class StructureCell: BaseTableViewCell {
                 let tagView = self.tagListView.addTag(value.name)
                 tagView.tagBackgroundColor = UIColor.randomColor
                 tagView.onTap = { tagView in
-                    self.delegate?.tagStructureClick(parentModel: structure, childClickIndex: index)
+                    self.tagDelegate?.tagStructureClick(parentModel: structure, childClickIndex: index)
                 }
             }
         } else {
@@ -61,7 +61,7 @@ class StructureCell: BaseTableViewCell {
                 let tagView = self.tagListView.addTag(value.title)
                 tagView.tagBackgroundColor = UIColor.randomColor
                 tagView.onTap = { tagView in
-                    self.delegate?.tagNavigationClick(parentModel: navigation, childClickIndex: index)
+                    self.tagDelegate?.tagNavigationClick(parentModel: navigation, childClickIndex: index)
                 }
             }
         }

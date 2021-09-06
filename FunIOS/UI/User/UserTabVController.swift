@@ -18,7 +18,7 @@ struct MenuItem {
 }
 
 
-class UserTabVController: UIViewController {
+class UserTabVController: BaseCVontroller {
     
     private let profileUrl = "https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/4639e530a32e1b721605e21908c63b4b~300x300.image"
     
@@ -78,9 +78,9 @@ class UserTabVController: UIViewController {
     }
     
     private let data = [
-        MenuItem(type: 1, icon: "ic_collection", title: "收藏"),
+        MenuItem(type: 1, icon: "ic_collection", title: "我的收藏"),
 //        MenuItem(type: 2, icon: "ic_share", title: "分享"),
-        MenuItem(type: 3, icon: "ic_integral", title: "积分"),
+        MenuItem(type: 3, icon: "ic_integral", title: "我的积分"),
         MenuItem(type: 4, icon: "ic_ranking", title: "排行榜"),
         //        MenuItem(type: 5, icon: "ic_browsing", title: "浏览历史")
     ]
@@ -116,7 +116,7 @@ class UserTabVController: UIViewController {
         
         topView.addSubview(imgLogout)
         imgLogout.snp.makeConstraints { maker in
-            maker.top.equalToSuperview().offset(statusHeight)
+            maker.top.equalToSuperview().offset(statusBarHeight)
             maker.width.equalTo(26)
             maker.height.equalTo(26)
             maker.trailing.equalToSuperview().offset(-20)
@@ -195,7 +195,7 @@ class UserTabVController: UIViewController {
         imgProfile.kf.setImage(with: URL(string: profileUrl), placeholder: UIImage(named: "mine_author"))
         
         self.showHUD(title: "刷新中")
-        Api.fetchUserCoinLevel { data in
+        Api.fetchUserCoinLevel(success: { data in
             self.labelNickName.snp.updateConstraints { maker in
                 maker.centerY.equalToSuperview().offset(5)
             }
@@ -210,7 +210,7 @@ class UserTabVController: UIViewController {
             self.labelIntegral.isHidden = false
             
             self.hideHUD()
-        }
+        }, error: error(error:))
     }
     
     private func addUserGesture() {

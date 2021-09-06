@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-class RankingVController: UIViewController {
+class RankingVController: BaseCVontroller {
     // 当前页面
     var page = 1
     
@@ -33,7 +33,7 @@ class RankingVController: UIViewController {
         let navigationHeight = navigationController?.navigationBar.frame.height ?? 0
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints {  (maker) in
-            maker.top.equalToSuperview().offset(statusHeight + navigationHeight)
+            maker.top.equalToSuperview().offset(statusBarHeight + navigationHeight)
             maker.leading.equalToSuperview()
             maker.trailing.equalToSuperview()
             maker.bottom.equalToSuperview()
@@ -66,7 +66,7 @@ class RankingVController: UIViewController {
             page += 1
         }
         
-        Api.fetchRanking(page: page, block: { (value: RankingModel?) in
+        Api.fetchRanking(page: page, success: { (value: RankingModel?) in
             //结束刷新
             if self.tableView.mj_header!.isRefreshing  { self.tableView.mj_header?.endRefreshing()
             }
@@ -88,7 +88,7 @@ class RankingVController: UIViewController {
             }
             
             self.tableView.reloadData()
-        })
+        }, error: error(error:))
     }
 }
 

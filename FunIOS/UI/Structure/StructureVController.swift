@@ -68,7 +68,6 @@ class StructrureVController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
         
         segmentedView.frame = CGRect(x:screenWidth / 2 - (totalItemWidth / 4), y: statusBarHeight, width: totalItemWidth / 2, height: 30)
 

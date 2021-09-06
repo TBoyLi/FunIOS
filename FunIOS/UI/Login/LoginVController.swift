@@ -11,7 +11,7 @@ import Toast_Swift
 import MBProgressHUD
 import SwiftEventBus
 
-class LoginVController: UIViewController {
+class LoginVController: BaseCVontroller {
     
     private let closeImage = UIImageView().then { (attr) in
         attr.image = UIImage(named: "ic_close")
@@ -60,7 +60,7 @@ class LoginVController: UIViewController {
         
         view.addSubview(closeImage)
         closeImage.snp.makeConstraints { (maker) in
-            maker.top.equalToSuperview().offset(statusHeight + barHight!)
+            maker.top.equalToSuperview().offset(statusBarHeight + barHight!)
             maker.leading.equalToSuperview().offset(30)
             maker.height.equalTo(20)
             maker.width.equalTo(20)
@@ -70,7 +70,7 @@ class LoginVController: UIViewController {
         
         view.addSubview(labelTitle)
         labelTitle.snp.makeConstraints { (maker) in
-            maker.top.equalToSuperview().offset(statusHeight + barHight! + screenWidth / 3)
+            maker.top.equalToSuperview().offset(statusBarHeight + barHight! + screenWidth / 3)
             maker.centerX.equalToSuperview()
         }
         
@@ -116,12 +116,12 @@ class LoginVController: UIViewController {
         
         self.showHUD(title: "登录中")
         
-        Api.login(username: username!, password: password!) { (value: UserModel?) in
+        Api.login(username: username!, password: password!, success: { (value: UserModel?) in
             UserDefaults.standard.setValue(value?.toJSONString(prettyPrint:true), forKey: userKey)
             self.hideHUD()
             self.close()
             SwiftEventBus.post(userEvent, sender: value)
-        }
+        }, error: error(error:))
     }
     
     @objc func close() {

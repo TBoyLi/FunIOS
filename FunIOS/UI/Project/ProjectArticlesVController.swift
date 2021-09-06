@@ -8,7 +8,7 @@
 import UIKit
 import JXSegmentedView
 
-class ProjectArticlesVController: UIViewController {
+class ProjectArticlesVController: BaseCVontroller {
     
     
     // 当前页面
@@ -81,7 +81,7 @@ class ProjectArticlesVController: UIViewController {
             page += 1
         }
         
-        Api.fetchProjectArticles(page: page, cid: cid, block: { (value: ArticleModel?) in
+        Api.fetchProjectArticles(page: page, cid: cid, success: { (value: ArticleModel?) in
             //结束刷新
             if self.tableView.mj_header!.isRefreshing  { self.tableView.mj_header?.endRefreshing()
             }
@@ -103,11 +103,11 @@ class ProjectArticlesVController: UIViewController {
             }
             
             self.tableView.reloadData()
-        })
+        }, error: error(error:))
     }
 }
 
-extension ProjectArticlesVController: JXSegmentedListContainerViewListDelegate, UITableViewDataSource, UITableViewDelegate {
+extension ProjectArticlesVController: JXSegmentedListContainerViewListDelegate, UITableViewDataSource, UITableViewDelegate, CollectDelegate {
     func listView() -> UIView {
         view
     }
@@ -120,6 +120,7 @@ extension ProjectArticlesVController: JXSegmentedListContainerViewListDelegate, 
     //每行加载样式
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tableViewCell = tableView.dequeueReusableCell(for: indexPath, cellType: ProjectCell.self)
+        tableViewCell.collectDelegate = self
         tableViewCell.model = articleList[indexPath.row]
         return tableViewCell
     }
@@ -129,6 +130,24 @@ extension ProjectArticlesVController: JXSegmentedListContainerViewListDelegate, 
         let model = self.articleList[indexPath.row]
         let webVController = WebVController(title: model.title, url: model.link)
         navigationController?.pushViewController(webVController, animated: true)
+    }
+    
+    //收藏文章
+    func collectAirticle(cid id: Int, tabCell tabviewCell: UITableViewCell) {
+        Api.collect(cid: id, success: { value in
+            let cell = tabviewCell as! ProjectCell
+            cell.refreshCollect(isCollect: true)
+            self.view.makeToast("收藏成功")
+        }, error: error(error:))
+    }
+    
+    //取消收藏文章
+    func uncollectAirticle(cid id: Int, tabCell tabviewCell: UITableViewCell) {
+        Api.uncollect(cid: id, success: { value in
+            let cell = tabviewCell as! ProjectCell
+            cell.refreshCollect(isCollect: false)
+            self.view.makeToast("取消收藏成功")
+        }, error: error(error:))
     }
 }
 

@@ -8,7 +8,7 @@
 import UIKit
 import JXSegmentedView
 
-class WechatArticlesVController: UIViewController {
+class WechatArticlesVController: BaseCVontroller {
     
     // 当前页面
     var page = 0
@@ -79,7 +79,7 @@ class WechatArticlesVController: UIViewController {
             page += 1
         }
         
-        Api.fetchWechatArticles(page: page, cid: cid, block: { (value: ArticleModel?) in
+        Api.fetchWechatArticles(page: page, cid: cid, success: { (value: ArticleModel?) in
             //结束刷新
             if self.tableView.mj_header!.isRefreshing  { self.tableView.mj_header?.endRefreshing()
             }
@@ -99,11 +99,11 @@ class WechatArticlesVController: UIViewController {
             }
             
             self.tableView.reloadData()
-        })
+        }, error: error(error:))
     }
 }
 
-extension WechatArticlesVController: JXSegmentedListContainerViewListDelegate, UITableViewDataSource, UITableViewDelegate {
+extension WechatArticlesVController: JXSegmentedListContainerViewListDelegate, UITableViewDataSource, UITableViewDelegate, CollectDelegate {
     func listView() -> UIView {
         view
     }
@@ -116,6 +116,7 @@ extension WechatArticlesVController: JXSegmentedListContainerViewListDelegate, U
     //每行加载样式
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tableViewCell = tableView.dequeueReusableCell(for: indexPath, cellType: WechatCell.self)
+        tableViewCell.collectDelegate = self
         tableViewCell.model = articleList[indexPath.row]
         return tableViewCell
     }
@@ -125,5 +126,23 @@ extension WechatArticlesVController: JXSegmentedListContainerViewListDelegate, U
         let model = self.articleList[indexPath.row]
         let webVController = WebVController(title: model.title, url: model.link)
         navigationController?.pushViewController(webVController, animated: true)
+    }
+    
+    //收藏文章
+    func collectAirticle(cid id: Int, tabCell tabviewCell: UITableViewCell) {
+        Api.collect(cid: id, success: { value in
+            let cell = tabviewCell as! WechatCell
+            cell.refreshCollect(isCollect: true)
+            self.view.makeToast("收藏成功")
+        }, error: error(error:))
+    }
+    
+    //取消收藏文章
+    func uncollectAirticle(cid id: Int, tabCell tabviewCell: UITableViewCell) {
+        Api.uncollect(cid: id, success: { value in
+            let cell = tabviewCell as! WechatCell
+            cell.refreshCollect(isCollect: false)
+            self.view.makeToast("取消收藏成功")
+        }, error: error(error:))
     }
 }

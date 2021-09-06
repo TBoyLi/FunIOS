@@ -9,7 +9,7 @@ import UIKit
 import JXSegmentedView
 
 
-class StructureListVController: UIViewController {
+class StructureListVController: BaseCVontroller {
     
     //type = 1 体系， type = 2 导航
     private var type = 1
@@ -61,13 +61,13 @@ class StructureListVController: UIViewController {
     
     private func getData() {
         if type == 1 {
-            Api.fetchStructures { (value: Array<StructureModel>?) in
+            Api.fetchStructures(success: { (value: Array<StructureModel>?) in
                 self.reloadTable(value: value)
-            }
+            }, error: error(error:))
         } else {
-            Api.fetchNavigations { (value: Array<NavigationModel>?) in
+            Api.fetchNavigations(success: { (value: Array<NavigationModel>?) in
                 self.reloadTable(value: value)
-            }
+            }, error: error(error:))
         }
     }
     
@@ -138,7 +138,7 @@ extension StructureListVController: UITableViewDelegate, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tableViewCell = tableView.dequeueReusableCell(for: indexPath, cellType: StructureCell.self)
-        tableViewCell.delegate = self
+        tableViewCell.tagDelegate = self
         if self.type == 1 {
             //            tableViewCell.setModel(type: 1, model: (self.list[indexPath.section] as! StructureModel).children[indexPath.row])
             tableViewCell.setModel(type: 1, model: (self.list[indexPath.section] as! StructureModel))

@@ -8,6 +8,16 @@
 import UIKit
 import SnapKitExtend
 
+public protocol CollectDelegate : NSObjectProtocol{
+    
+    //收藏 文章
+    func collectAirticle(cid id: Int, tabCell tabviewCell: UITableViewCell) -> Void
+    
+    //取消收藏 文章
+    func uncollectAirticle(cid id: Int, tabCell tabviewCell: UITableViewCell) -> Void
+}
+
+
 class ArticleCell: BaseTableViewCell {
     
     private lazy var  labelAuthor = UILabel().then({ (attr) in
@@ -69,46 +79,60 @@ class ArticleCell: BaseTableViewCell {
                 labelTitle.text = model?.title
                 labelSuperChapterName.text = model?.superChapterName
                 labelChapterName.text = " · \(model?.chapterName ?? "")"
+
+                isCollect = model?.collect ?? false
+                
+                refreshCollect(isCollect: isCollect)
+                
+                imgCollect.tag = model?.id ?? 0
                 return
             }
         }
     }
     
-    
     override func configUI() {
         contentView.addSubview(labelAuthor)
-        labelAuthor.snp.makeConstraints {(make) in
-            make.leading.equalToSuperview().offset(10)
-            make.top.equalToSuperview().offset(10)
-            
+        labelAuthor.snp.makeConstraints {maker in
+            maker.leading.equalToSuperview().offset(10)
+            maker.top.equalToSuperview().offset(10)
         }
 
         contentView.addSubview(labelTime)
-        labelTime.snp.makeConstraints({(make) in
-            make.trailing.equalToSuperview().offset(-10)
-            make.top.equalToSuperview().offset(10)
+        labelTime.snp.makeConstraints({maker in
+            maker.trailing.equalToSuperview().offset(-10)
+            maker.top.equalToSuperview().offset(10)
         })
 
         contentView.addSubview(labelTitle)
-        labelTitle.snp.makeConstraints({(make) in
-            make.top.equalTo(labelAuthor.snp.bottom).offset(10)
-            make.leading.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview().offset(-10)
+        labelTitle.snp.makeConstraints({maker in
+            maker.top.equalTo(labelAuthor.snp.bottom).offset(10)
+            maker.leading.equalToSuperview().offset(10)
+            maker.trailing.equalToSuperview().offset(-10)
             
         })
         
         contentView.addSubview(labelSuperChapterName)
-        labelSuperChapterName.snp.makeConstraints {(make) in
-            make.leading.equalToSuperview().offset(10)
-            make.top.equalTo(labelTitle.snp.bottom).offset(10)
-            make.bottom.equalToSuperview().offset(-10)
+        labelSuperChapterName.snp.makeConstraints {maker in
+            maker.leading.equalToSuperview().offset(10)
+            maker.top.equalTo(labelTitle.snp.bottom).offset(10)
+            maker.bottom.equalToSuperview().offset(-10)
         }
 
         contentView.addSubview(labelChapterName)
-        labelChapterName.snp.makeConstraints({(make) in
-            make.leading.equalTo(labelSuperChapterName.snp.trailing)
-            make.top.equalTo(labelTitle.snp.bottom).offset(10)
-            make.bottom.equalToSuperview().offset(-10)
+        labelChapterName.snp.makeConstraints({maker in
+            maker.leading.equalTo(labelSuperChapterName.snp.trailing)
+            maker.top.equalTo(labelTitle.snp.bottom).offset(10)
+            maker.bottom.equalToSuperview().offset(-10)
         })
+        
+        contentView.addSubview(imgCollect)
+        imgCollect.snp.makeConstraints { maker in
+            maker.height.equalTo(20)
+            maker.width.equalTo(20)
+            maker.trailing.equalToSuperview().offset(-10)
+            maker.bottom.equalToSuperview().offset(-5)
+        }
+        
+        imgCollect.addTarget(self, action: #selector(self.collect(btn:)), for: .touchUpInside)
     }
 }
