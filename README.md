@@ -4,6 +4,9 @@
 
 **我一直都是做Android开发的，一直以来在断断续续的学习IOS，学了Object-C，可以看懂，写就不太习惯，后来直接上手了swift，突然觉得太舒服了，跟kotlin，dart差不多，本项目是纯代目撸布局。使用SnapKit 拘束布局搭建**
 
+## 改善
+**有需求欢迎issue，空余时间会持续更新中**
+
 ## 依赖第三方
 
 ```
@@ -26,11 +29,19 @@
 
 ```
 
+## 版本号
+***V1.0***
+*基本模块的实现 主页 项目 公众号 体系 我的 数据获取显示，登录等*
+
+***V1.1***
+*更新app logo 图标，删除没必要的png，增加收藏功能，网络请求增加失败回调统一处理*
+
 ## 使用方法
 **下载源码，根目录执行 pod install 用 xcode 打开 FunIOS.xcworkspace 即可**
 
 ## 截图
-<img src="https://user-images.githubusercontent.com/14815341/129129661-5ce33645-615d-473c-9ebe-0b7d932dc425.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/129129680-0328ecdc-2ab8-43e4-ab2d-9014a80feb8f.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/129130311-d7135ba4-c4e1-4de5-b536-9cc84a9c53ce.png"  width="260px" />  
+
+<img src="https://user-images.githubusercontent.com/14815341/132178943-04425f12-a29d-4a79-a1ef-59507be55b68.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/132178973-53815d24-9c18-4a97-89e9-162d40c84647.png"  width="260px" />      <img src="https://user-images.githubusercontent.com/14815341/132178998-bcf379c0-f857-4d96-9513-e0dcd17ed699.png"  width="260px" />  
 
 
 <img src="https://user-images.githubusercontent.com/14815341/129130326-7f564552-75d1-4f09-a4a7-1e81ec1ee45a.png"  width="260px" />     <img src="https://user-images.githubusercontent.com/14815341/129130336-c062ce87-3e45-479d-9ff9-f28dfa36e6d4.png"  width="260px" />     <img src="https://user-images.githubusercontent.com/14815341/129130347-66386ecf-c5a9-44cd-b12e-91d49278980a.png"  width="260px" />
