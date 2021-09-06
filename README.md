@@ -5,7 +5,7 @@
 **我一直都是做Android开发的，一直以来在断断续续的学习IOS，学了Object-C，可以看懂，写就不太习惯，后来直接上手了swift，突然觉得太舒服了，跟kotlin，dart差不多，本项目是纯代目撸布局。使用SnapKit 拘束布局搭建**
 
 ## 改善
-**有需求欢迎issue，空余时间会尽量满足大家**
+**有需求欢迎issue，空余时间会持续更新中**
 
 ## 依赖第三方
 
@@ -28,6 +28,13 @@
   pod 'SwiftEventBus', :tag => '5.1.0', :git => 'https://github.com/cesarferreira/SwiftEventBus.git' #跨界面通信
 
 ```
+
+## 版本号
+***V1.0***
+*基本模块的实现 主页 项目 公众号 体系 我的 数据获取显示，登录等*
+
+***V1.1***
+*增加收藏功能*
 
 ## 使用方法
 **下载源码，根目录执行 pod install 用 xcode 打开 FunIOS.xcworkspace 即可**
