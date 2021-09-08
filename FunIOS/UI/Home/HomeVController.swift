@@ -23,10 +23,11 @@ class HomeVController: BaseCVontroller {
     
     private lazy var dispatchGroup = { return DispatchGroup.init() }()
     
-    private lazy var tableView: UITableView = UITableView(frame: .zero, style: .plain).then({ (attr) in
+    private lazy var tableView: FloatButtonTableView = FloatButtonTableView(frame: .zero, style: .plain).then({ (attr) in
         attr.backgroundColor = UIColor.white
         attr.delegate = self
         attr.dataSource = self
+        attr.floatButtonDelegate = self
         attr.alwaysBounceVertical = true
         //        attr.separatorStyle = .none
         attr.register(ArticleCell.self, forCellReuseIdentifier: "ArticleCell")
@@ -59,15 +60,22 @@ class HomeVController: BaseCVontroller {
     
     override func viewDidLoad() {
         self.view.addSubview(tableView)
-        
         tableView.snp.makeConstraints { maker in
             maker.top.equalToSuperview().offset(statusBarHeight)
             maker.left.equalToSuperview()
             maker.right.equalToSuperview()
-            maker.bottom.equalToSuperview()
+            maker.bottom.equalToSuperview().offset(-40)
         }
         
         tableView.tableHeaderView = bannerView
+        
+        self.view.addSubview(floatButton)
+        floatButton.snp.makeConstraints { maker in
+            maker.bottom.equalToSuperview().offset(-80)
+            maker.right.equalToSuperview().offset(-30)
+        }
+        
+        floatButton.addTarget(self, action: #selector(topOffset), for: .touchUpInside)
         
         if #available(iOS 11.0, *) {
             UIScrollView.appearance().contentInsetAdjustmentBehavior = .never
@@ -75,6 +83,10 @@ class HomeVController: BaseCVontroller {
             automaticallyAdjustsScrollViewInsets = false
         }
         setRefresh()
+    }
+    
+    @objc func topOffset() {
+        self.tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: .bottom, animated: floatAnimal)
     }
     
     private func setRefresh() {
@@ -148,7 +160,7 @@ class HomeVController: BaseCVontroller {
     
 }
 
-extension HomeVController: UITableViewDataSource, UITableViewDelegate, CollectDelegate {
+extension HomeVController: UITableViewDataSource, UITableViewDelegate, CollectDelegate , FloatButtonDelegate{
     //数据
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return articleList.count
@@ -190,5 +202,10 @@ extension HomeVController: UITableViewDataSource, UITableViewDelegate, CollectDe
             cell.refreshCollect(isCollect: false)
             self.view.makeToast("取消收藏成功")
         }, error: error(error:))
+    }
+    
+    func floatStatus(forHide hide: Bool, withAnimal animal: Bool) {
+        floatButton.isHidden = hide
+        floatAnimal = animal
     }
 }

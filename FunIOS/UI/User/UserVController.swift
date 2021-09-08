@@ -1,25 +1,36 @@
 //
-//  UserVController.swift
+//  UserTabVController.swift
 //  FunIOS
 //
-//  Created by redli on 2021/7/21.
+//  Created by redli on 2021/8/9.
 //
 
-import UIKit
 import Foundation
-import SnapKitExtend
+import UIKit
 import SwiftEventBus
+import Kingfisher
+import Toast_Swift
 
-struct Menu {
+struct MenuItem {
     var type: Int
-    var code: String
+    var icon: String
     var title: String
 }
 
-class UserVController: UIViewController {
+
+class UserVController: BaseCVontroller {
+    
+    private let profileUrl = "https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/4639e530a32e1b721605e21908c63b4b~300x300.image"
     
     private let topView = UIView().then { (attr) in
         attr.backgroundColor = UIColor.red.withAlphaComponent(0.6)
+        attr.height = screenHeight / 4
+    }
+    
+    private let imgLogout = UIImageView().then { attr in
+        attr.image = UIImage(named: "ic_logout")
+        attr.contentMode = .scaleAspectFit
+        attr.isUserInteractionEnabled = true
     }
     
     //头像
@@ -35,7 +46,7 @@ class UserVController: UIViewController {
         attr.text = "立即登录"
         attr.lineBreakMode = .byTruncatingTail
         attr.numberOfLines = 1
-        attr.font = UIFont.boldSystemFont(ofSize: 18)
+        attr.font = UIFont.boldSystemFont(ofSize: 24)
         attr.isUserInteractionEnabled = true
         attr.textColor = UIColor.white
     }
@@ -43,64 +54,82 @@ class UserVController: UIViewController {
     //等级
     private let labelLevel = UILabel().then { (attr) in
         attr.text = "lv 0"
-        attr.backgroundColor = UIColor.green.withAlphaComponent(0.6)
+        attr.font = UIFont.italicSystemFont(ofSize: 16)
         attr.textColor = UIColor.white
+        attr.layer.masksToBounds = true
+        attr.layer.cornerRadius = 5
+        //        attr.backgroundColor = UIColor.orange.withAlphaComponent(0.8)
     }
     
     //积分
     private let labelIntegral = UILabel().then { (attr) in
         attr.text = "积分 0"
+        attr.font = UIFont.italicSystemFont(ofSize: 16)
         attr.textColor = UIColor.white
-        attr.backgroundColor = UIColor.white
-    }
-    
-    private let menus = [
-        Menu(type: 1, code: "ic_collection", title: "收藏"),
-        Menu(type: 2, code: "ic_share", title: "分享"),
-        Menu(type: 3, code: "ic_integral", title: "积分"),
-        Menu(type: 4, code: "ic_ranking", title: "排行榜"),
-        Menu(type: 5, code: "ic_browsing", title: "浏览历史")
-    ]
-    
-    private let normalToolView = UIView().then { (attr) in
-        attr.layer.cornerRadius = 10
         attr.layer.masksToBounds = true
-        attr.backgroundColor = UIColor.white
+        attr.layer.cornerRadius = 5
+        //        attr.backgroundColor = UIColor.cyan.withAlphaComponent(0.4)
     }
     
-    private let labelNormalTool = UILabel().then { (attr) in
-        attr.text = "常用工具"
-        attr.textColor = UIColor.black
-        attr.font = UIFont.boldSystemFont(ofSize: 18)
+    private let tabView = UITableView().then { attr in
+        attr.rowHeight = 60
+        attr.separatorStyle = .none
+        attr.register(cellType: UserCell.self)
     }
     
-    private let tools =  [
-        Menu(type: 6, code: "ic_google", title: "Google仓库"),
-        Menu(type: 7, code: "ic_todo", title: "TODO"),
-        Menu(type: 8, code: "ic_calendar", title: "日历"),
-        Menu(type: 9, code: "ic_courier", title: "快递"),
-        Menu(type: 10, code: "ic_weather", title: "天气")
+    private let data = [
+        MenuItem(type: 1, icon: "ic_collection", title: "我的收藏"),
+//        MenuItem(type: 2, icon: "ic_share", title: "分享"),
+        MenuItem(type: 3, icon: "ic_integral", title: "我的积分"),
+        MenuItem(type: 4, icon: "ic_ranking", title: "排行榜"),
+        //        MenuItem(type: 5, icon: "ic_browsing", title: "浏览历史")
     ]
+    
+    private lazy var alertController = {
+        UIAlertController(title: "退出提示", message: "你确定要退出登录吗？", preferredStyle: .alert)
+    }()
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.isNavigationBarHidden = true
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidLoad() {
-        view.backgroundColor = UIColor.gray.withAlphaComponent(0.1)
-        view.addSubview(topView)
-        topView.snp.makeConstraints { (maker) in
-            maker.top.equalToSuperview()
-            maker.leading.equalToSuperview()
-            maker.trailing.equalToSuperview()
-            maker.height.equalTo(screenHeight / 4)
+        
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        
+        let okAction = UIAlertAction(title: "退出", style: .default) { action in
+            self.clearUser()
         }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(okAction)
+        
+        tabView.dataSource = self
+        tabView.delegate = self
+        
+        view.addSubview(tabView)
+        tabView.snp.makeConstraints { maker in
+            maker.edges.equalToSuperview()
+        }
+        
+        tabView.tableHeaderView = topView
+        
+        topView.addSubview(imgLogout)
+        imgLogout.snp.makeConstraints { maker in
+            maker.top.equalToSuperview().offset(statusBarHeight)
+            maker.width.equalTo(26)
+            maker.height.equalTo(26)
+            maker.trailing.equalToSuperview().offset(-20)
+        }
+        imgLogout.isHidden = true
+        let clearTap = UITapGestureRecognizer.init(target: self, action: #selector(onLogoutClick))
+        imgLogout.addGestureRecognizer(clearTap)
         
         topView.addSubview(imgProfile)
         imgProfile.snp.makeConstraints { (maker) in
-            maker.width.equalTo(60)
-            maker.height.equalTo(60)
-            maker.leading.equalToSuperview().offset(20)
+            maker.width.equalTo(65)
+            maker.height.equalTo(65)
+            maker.leading.equalToSuperview().offset(30)
             maker.centerY.equalToSuperview().offset(20)
         }
         
@@ -126,130 +155,112 @@ class UserVController: UIViewController {
         }
         labelIntegral.isHidden = true
         
-        let collectionMenusView = UserMenuCollectionView.init(source: menus)
-        collectionMenusView.delegate = self
-        view.addSubview(collectionMenusView)
-        collectionMenusView.snp.makeConstraints { (maker) in
-            maker.top.equalTo(topView.snp.bottom).offset(10)
-            maker.leading.equalToSuperview().offset(10)
-            maker.trailing.equalToSuperview().offset(-10)
-            maker.height.equalTo(60)
-        }
-        
-        view.addSubview(normalToolView)
-        normalToolView.snp.makeConstraints { (attr) in
-            attr.leading.equalToSuperview().offset(10)
-            attr.trailing.equalToSuperview().offset(-10)
-            attr.top.equalTo(collectionMenusView.snp.bottom).offset(15)
-            attr.height.equalTo(200)
-        }
-        
-        normalToolView.addSubview(labelNormalTool)
-        labelNormalTool.snp.makeConstraints { (attr) in
-            attr.leading.equalToSuperview().offset(10)
-            attr.trailing.equalToSuperview().offset(-10)
-            attr.top.equalToSuperview().offset(10)
-            attr.height.equalTo(20)
-        }
-        
-        let collectionToolsView = UserToolsCollectionView.init(source: tools)
-        collectionToolsView.delegate = self
-        normalToolView.addSubview(collectionToolsView)
-        collectionToolsView.snp.makeConstraints { (attr) in
-            attr.leading.equalToSuperview().offset(10)
-            attr.trailing.equalToSuperview().offset(-10)
-            attr.top.equalTo(labelNormalTool.snp.bottom).offset(10)
-            attr.height.equalTo(150)
-        }
-        
-        let userTap = UITapGestureRecognizer.init(target: self, action: #selector( onUserClick))
-        
         let userJson = UserDefaults.standard.string(forKey: userKey)
         if userJson == nil {
-            imgProfile.addGestureRecognizer(userTap)
-            labelNickName.addGestureRecognizer(userTap)
+            addUserGesture()
         } else {
             let userModel = UserModel.deserialize(from: userJson)
-            refreshUser(user: userModel)
+            self.refreshUser(user: userModel)
         }
         
         SwiftEventBus.onMainThread(self, name: userEvent) { result in
             let userModel = result?.object as! UserModel
             self.refreshUser(user: userModel)
         }
-        
     }
     
     @objc func onUserClick() {
         navigationController?.pushViewController(LoginVController(), animated: true)
     }
     
+    @objc func onLogoutClick() {
+        self.present(alertController, animated: true, completion:  nil)
+    }
+    
+    private func clearUser() {
+        UserDefaults.standard.removeObject(forKey: userKey)
+        imgProfile.image = UIImage(named: "mine_author")
+        labelNickName.text = "立即登录"
+        imgLogout.isHidden = true
+        labelLevel.isHidden = true
+        labelIntegral.isHidden = true
+        labelLevel.text = ""
+        labelIntegral.text = ""
+        addUserGesture()
+    }
+    
     private func refreshUser(user: UserModel?) {
-        labelNickName.snp.updateConstraints { maker in
-            maker.centerY.equalToSuperview().offset(5)
-        }
-        let coinCount = user?.coinCount ?? 0
         labelNickName.text = user?.nickname
-        labelIntegral.text = String(coinCount)
-        labelLevel.isHidden = false
-        labelIntegral.isHidden = false
+        imgLogout.isHidden = false
+        imgProfile.kf.setImage(with: URL(string: profileUrl), placeholder: UIImage(named: "mine_author"))
+        
+        self.showHUD(title: "刷新中")
+        Api.fetchUserCoinLevel(success: { data in
+            self.labelNickName.snp.updateConstraints { maker in
+                maker.centerY.equalToSuperview().offset(5)
+            }
+            
+            let coinCount = data?.coinCount ?? 0
+            let level = data?.level ?? 0
+            
+            self.labelIntegral.text = "积分 \(coinCount)"
+            self.labelLevel.text = "lv \(level)"
+            
+            self.labelLevel.isHidden = false
+            self.labelIntegral.isHidden = false
+            
+            self.hideHUD()
+        }, error: error(error:))
+    }
+    
+    private func addUserGesture() {
+        let userTap = UITapGestureRecognizer.init(target: self, action: #selector( onUserClick))
+        let pgr = UIPinchGestureRecognizer.init(target: self, action: #selector(onUserClick))
+        imgProfile.addGestureRecognizer(pgr)
+        labelNickName.addGestureRecognizer(userTap)
     }
 }
 
-extension UserVController : MenusDelegate, ToolsDelegate {
+extension UserVController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.count
+    }
     
-    func onMenuClick(type: Int, index: Int) {
-        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let tableViewCell = tableView.dequeueReusableCell(for: indexPath, cellType: UserCell.self)
+        tableViewCell.model = self.data[indexPath.row]
+        return tableViewCell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let userJson = UserDefaults.standard.string(forKey: userKey)
-        
-        if userJson == nil && ((userJson?.isEmpty) != nil) {
-            navigationController?.pushViewController(LoginVController(), animated: true)
+        if userJson == nil {
+            self.view.makeToast("请点击头像登录")
             return
         }
         
-        switch type {
-            case 1:
-                
-                break
-            case 2:
-                
-                break
-            case 3:
-                
-                break
-            case 4:
-                
-                break
-            case 5:
-                
-                break
-            default:
-                break
+        let item = self.data[indexPath.row]
+        
+        var controller: UIViewController?
+        switch item.type {
+        case 1:
+            controller = CollectVController()
+            break;
+        case 2:
+            
+            break;
+        case 3:
+            controller = IntegralVController()
+            break;
+        case 4:
+            controller = RankingVController()
+            break;
+        default:
+            controller = UIViewController()
+            break;
         }
-    }
-
-    func onToolClick(type: Int, index: Int) {
-        var url = ""
-        switch type {
-            case 6:
-                url = "https://www.wanandroid.com/maven_pom/index"
-                break
-            case 7:
-                url = "https://www.wanandroid.com/lg/todo/list/0"
-                break
-            case 8:
-                url = "https://wannianrili.bmcx.com/"
-                break
-            case 9:
-                url = "https://www.kuaidi100.com/courier/"
-                break
-            case 10:
-                url = "http://weathernew.pae.baidu.com/weathernew/pc?query=%E4%BA%91%E5%8D%97%E6%98%86%E6%98%8E%E5%A4%A9%E6%B0%94&srcid=4982&city_name=%E6%98%86%E6%98%8E&province_name=%E4%BA%91%E5%8D%97"
-                break
-            default:
-                break
+        if controller != nil {
+            navigationController?.pushViewController(controller!, animated: true)
         }
-        let webController = WebVController(title: self.tools[index].title, url: url)
-        navigationController?.pushViewController(webController, animated: true)
     }
 }

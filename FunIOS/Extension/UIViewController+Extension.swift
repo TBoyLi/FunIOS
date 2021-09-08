@@ -25,7 +25,7 @@ extension UIViewController {
     }
 
     @discardableResult
-    func showHUDWithError(error: String) -> MBProgressHUD {
+    func showHUDWithError(error: String?) -> MBProgressHUD {
         return showHUD(title: error, duration: HUD_Duration_Normal)
     }
 

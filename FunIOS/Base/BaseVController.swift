@@ -7,11 +7,21 @@
 
 import Foundation
 import UIKit
+import LGButton
 
 
-class BaseCVontroller:  UIViewController{
+class BaseCVontroller: UIViewController{
+    
+    var floatAnimal = false
+    
+    var floatButton = UIButton().then({attr in
+        attr.setImage(UIImage(named: "ic_top"), for: .normal)
+        attr.contentMode = .scaleToFill
+        attr.isHidden = true
+    })
     
     func error(error: String?) {
-        view.makeToast(error)
+//        view.makeToast(error)
+        showHUDWithError(error: error)
     }
 }

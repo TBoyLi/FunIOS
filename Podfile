@@ -25,5 +25,6 @@ target 'FunIOS' do
   pod 'Toast-Swift', '~> 5.0.1'
   pod 'TagListView', '~> 1.0' #tag标签栏
   pod 'SwiftEventBus', :tag => '5.1.0', :git => 'https://github.com/cesarferreira/SwiftEventBus.git'
-  
+#  pod 'MEVFloatingButton' #UITableView,UICollectionView和UIScrollView超类，用于在它上面显示一个可定制的浮动按钮
+
 end

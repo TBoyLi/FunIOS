@@ -20,7 +20,7 @@ class IndexVController: UITabBarController {
         let project = ProjectVController()
         let wechat = WechatVController()
         let structure = StructrureVController()
-        let user = UserTabVController()
+        let user = UserVController()
         
         home.tabBarItem = UITabBarItem(title: "主页", image: UIImage(named: "home_tabbar_night_32x32_"), selectedImage: UIImage(named: "home_tabbar_press_32x32_"))
         
